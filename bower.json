@@ -1,0 +1,11 @@
+{
+  "name": "lotg-game",
+  "description": "game for lotg",
+  "authors": [
+    "rushanedublin <rushanedublin@gmail.com>"
+  ],
+  "private": true,
+  "dependencies": {
+    "babylonjs": "^2.4.1"
+  }
+}
