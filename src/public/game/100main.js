@@ -13,7 +13,7 @@
     //scene.clearColor = new BABYLON.Color3(0, 0.4, 0.4);
      // This creates and positions a free camera
      //var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 10, 0), scene);
-     lotgCamera = new BABYLON.ArcRotateCamera("ArcRotateCamera", 10, 10, 40, new BABYLON.Vector3(0, 70, 0), scene);
+     lotgCamera = new BABYLON.ArcRotateCamera("ArcRotateCamera", 10, 10, 40, new BABYLON.Vector3(0, 70, 50), scene);
      
      // This targets the camera to scene origin
      //lotgCamera .setTarget(BABYLON.Vector3.Zero());
@@ -34,12 +34,16 @@
   var scene = createScene();
   lotgScene = scene;
   loadMats(scene);
+  lotg.game = createGame();
+  
   Promise.all(loadModels(scene)).then(function(data){
-	  var stub = createStubby();
+	  var stub = createStubby(1);
 	  
-	  moveUnit(stub,lotg.map[0][0][0]);
-	  moveUnit(createStubby(),lotg.map[1][0][0]);
-	  
+	  lotg.game.placeUnit(stub,lotg.map[0][0][0]);
+	  lotg.game.placeUnit(createStubby(1),lotg.map[1][0][0]);
+	  lotg.game.placeUnit(createStubby(2),lotg.map[19][0][19]);
+	  lotg.game.placeUnit(createStubby(2),lotg.map[18][0][19]);
+	  lotg.game.finishSetUp();
   });
   
   

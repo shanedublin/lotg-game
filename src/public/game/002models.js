@@ -41,9 +41,10 @@ function loadModels(scene){
 }
 
 
-function createStubby(){
+function createStubby(playerId){
 	var stub = lotgModels.stubby.clone(lotgModels.stubby.name);
 	stub.lotg = {};
+	stub.lotg.playerId = playerId;
 	stub.lotg.previousTile = null;
 	//stub.lotg.selectable = true;
 	
@@ -60,10 +61,12 @@ function getUnitInfo(){
 	var unit = {};
 	unit.name = 'Stubs';
 	unit.health = 1;
-	unit.move = 1;
-	unit.attack = 1;
-	unit.defense = 1;
+	unit.move = 70;
+	unit.remainingMoves = 70;
+	unit.attack = 3;
+	unit.defense = 2;
 	unit.range = 1;
+	unit.movePath = [];
 	
 	return unit;
 }
