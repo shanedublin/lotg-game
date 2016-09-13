@@ -46,6 +46,8 @@ function createStubby(playerId){
 	stub.lotg = {};
 	stub.lotg.playerId = playerId;
 	stub.lotg.previousTile = null;
+	stub.lotg.currentTile = null;
+	stub.lotg.startingTile = null;
 	//stub.lotg.selectable = true;
 	
 	stub.material = lotgMats.redMat;
@@ -61,8 +63,8 @@ function getUnitInfo(){
 	var unit = {};
 	unit.name = 'Stubs';
 	unit.health = 1;
-	unit.move = 70;
-	unit.remainingMoves = 70;
+	unit.move = 7;
+	unit.remainingMoves = 7;
 	unit.attack = 3;
 	unit.defense = 2;
 	unit.range = 1;

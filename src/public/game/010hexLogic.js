@@ -30,7 +30,11 @@ hex.dist = function(cube1,cube2){
 	return (x + y + z) / 2;
 };
 
-// returns the cube coords
+/**
+ *  returns the cube coords
+ *  col = x, rows = y
+ *  
+ */
 hex.convertCords = function(col,row){
 	
 	var x = col;

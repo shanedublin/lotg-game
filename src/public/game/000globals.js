@@ -32,3 +32,5 @@ lotg.gameStates = {
 		victory: 'victory'
 		
 };
+
+lotg.textures = {};

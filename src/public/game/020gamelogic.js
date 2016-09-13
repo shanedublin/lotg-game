@@ -7,6 +7,9 @@ function createGame(){
 	game.currentState = lotg.gameStates.setUp;
 	game.turns = 0;
 	
+	// the unit that the playe is moving this turn	
+	game.turnUnit = null;
+	
 	game.currentPlayerId = 1;
 	
 	
@@ -24,36 +27,44 @@ function createGame(){
 	game.moveUnit = function(unit,tile){
 		
 		
+			if(game.currentState !== lotg.gameStates.move) {
+				console.error('Not time to move yet');
+				return;
+			}
+			
+			
+			
+			if(unit.lotg.playerId !== game.currentPlayerId){
+				console.log('Not that players Turn!');
+				return;
+			}
+			
+			if(!canUseUnit(unit)){
+				return;
+			}
+			
+			
+			if(unit.lotg.unitInfo.remainingMoves <= 0){			
+				console.log('Unit out of moves!');
+				return;
+			}
+			
+			// check to see if they are moving to and adjacent tile
+			
+			if(!hex.adjacent(unit.lotg.currentTile.lotg.position,tile.lotg.position)){
+				console.log('Not adjacent!');
+				return;
+			}
+			
+			if(setUnit(unit,tile)){
+				//console.log(unit);
+				unit.lotg.unitInfo.movePath.push(tile);
+				tile.material = lotgMats.greenMatWalked;
+				unit.lotg.unitInfo.remainingMoves -= 1;
+				selectObject(unit);
+				game.movedUnits.add(unit);
+			}
 		
-		if(game.currentState !== lotg.gameStates.move) {
-			console.error('Not time to move yet');
-			return;
-		}
-		
-		if(unit.lotg.playerId !== game.currentPlayerId){
-			console.log('Not that players Turn!');
-			return;
-		}
-		
-		if(unit.lotg.unitInfo.remainingMoves <= 0){			
-			console.log('Unit out of moves!');
-			return;
-		}
-		// check to see if they are moving to and adjacent tile
-		
-		if(!hex.adjacent(unit.lotg.previousTile.lotg.position,tile.lotg.position)){
-			console.log('Not adjacent!');
-			return;
-		}
-		
-		if(setUnit(unit,tile)){
-			//console.log(unit);
-			unit.lotg.unitInfo.movePath.push(tile);
-			tile.material = lotgMats.greenMatWalked;
-			unit.lotg.unitInfo.remainingMoves -= 1;
-			selectObject(unit);
-			game.movedUnits.add(unit);
-		}
 		//game.setState(lotg.gameStates.attack);
 		//game.currentState = lotg.gameStates.attack;
 	};
@@ -71,6 +82,10 @@ function createGame(){
 			return;
 		}
 		
+		if(!canUseUnit(attacker)){
+			return;
+		}
+		
 		console.log('atacked player!');
 		//game.setState(lotg.gameStates.move);
 			
@@ -81,15 +96,8 @@ function createGame(){
 		
 		// reset the color of the move path
 		// reset the remaining move
-		for(let unit of game.movedUnits){
-			unit.lotg.unitInfo.remainingMoves = unit.lotg.unitInfo.move;
-			for (let i = 0; i< unit.lotg.unitInfo.movePath.length; i ++){
-				let tile = unit.lotg.unitInfo.movePath[i];
-				tile.material = tile.lotg.defaultMat;
-			}
-		}
-		// clear the set only keep track of the units moved this round
-		game.movedUnits.clear();
+		resetMovement();
+		game.turnUnit = null;
 		
 		
 		if(game.currentPlayerId === 1){
@@ -128,33 +136,92 @@ function createGame(){
 		}
 	};
 	
+	game.cancelMovement = function(){
+		if(game.currentState === lotg.gameStates.move){
+			if(game.turnUnit !== null){
+				setUnit(game.turnUnit,game.turnUnit.lotg.startingTile);
+				game.turnUnit = null;
+			}  
+			resetMovement();
+		}else{
+			console.error('Not a movement Turn!');
+		}
+	};
+	
 	return game;
 	
-	function setUnit(unit, tile){
-		if(tile.lotg.unit === null){	
-			var  newPos = {
-					x: tile.position.x,
-					y: tile.position.y,
-					z: tile.position.z
-			};
-			
-			newPos.y += 0.75;
-			unit.position = newPos;
-			tile.lotg.unit = unit;
-			//console.log(unit.lotg);
-			if(unit.lotg.previousTile !== null){
-				unit.lotg.previousTile.lotg.unit = null;
+	function attackMath(attacker, defender){
+		var attackDice  = rollAttack(attacker.unitInfo.attack);
+		var defenseDice = rollDefense(defender.unitInfo.deffense);
+		var damage = attackDice - defenseDice;
+		return {attack:attackDice, defense: defenseDice,damage:damage};
+	}
+	
+	function resetMovement(){
+		for(let unit of game.movedUnits){
+			unit.lotg.unitInfo.remainingMoves = unit.lotg.unitInfo.move;
+			for (let i = 0; i< unit.lotg.unitInfo.movePath.length; i ++){
+				let tile = unit.lotg.unitInfo.movePath[i];
+				tile.material = tile.lotg.defaultMat;
 			}
-				
-			unit.lotg.previousTile = tile;
+			unit.lotg.startingTile = unit.lotg.currentTile;
 			
-			return true;
-				
 		}
-		else{
-			console.log('There is already a unit there!');
-			return false;
-		}	
+		
+		// clear the set only keep track of the units moved this round
+		game.movedUnits.clear();
+	}
+	
+	/**
+	 * checks to see if you can use that unit
+	 * if no unit has been selected yet or its the same unit
+	 * used in that turn you can use it.
+	 */
+	function canUseUnit(unit){
+		if(game.turnUnit === null){			
+			game.turnUnit = unit;
+			return true;
+		}else{
+			if(game.turnUnit !== unit){
+				console.error('You cant move that unit this turn!');
+				return false;
+			}else{
+				return true;
+			}
+		}
+	}
+	
+	function setUnit(unit, tile){
+			
+			if(tile.lotg.unit === null){	
+				var  newPos = {
+						x: tile.position.x,
+						y: tile.position.y,
+						z: tile.position.z
+				};
+				
+				newPos.y += 0.75;
+				unit.position = newPos;
+				tile.lotg.unit = unit;
+			//	console.log(unit.lotg);
+				if(unit.lotg.startingTile === null){
+					unit.lotg.startingTile = tile;
+				}
+				
+				//console.log(unit.lotg.currentTile);
+				if(unit.lotg.currentTile !== null){					
+					unit.lotg.currentTile.lotg.unit = null;
+				}	
+				unit.lotg.currentTile = tile;
+				
+				return true;
+					
+			}
+			else{
+				console.log('There is already a unit there!');
+				return false;
+			}	
+		
 	}
 	
 	

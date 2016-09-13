@@ -34,7 +34,12 @@ function mouseDownHandler (event){
 			
 			if(mesh.lotg.type === 'TILE'){
 				//console.log('Move me to that tile!');
-				lotg.game.moveUnit(lotgSelectedObject,mesh);
+				try {
+					
+					lotg.game.moveUnit(lotgSelectedObject,mesh);
+				} catch (e) {
+						console.error(e);
+				}
 			}else{
 				console.log('Attacka me Some Bad GUYS!');
 				lotg.game.attackUnit(lotgSelectedObject,mesh);

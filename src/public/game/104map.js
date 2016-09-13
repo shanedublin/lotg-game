@@ -14,7 +14,7 @@ lotgPromises.tile.then(function(data,data2){
 	//console.log(data[0]);
 	//console.log(data[1]);
 	lotgModels.hex = tile;
-	createFlatMap();
+	createFlatMap(10,1,10);
 
 	
 });
@@ -34,22 +34,22 @@ function initMap(_x,_y,_z){
 			}
 		}
 	}
-	console.log(counter);
+//	console.log(counter);
 	
 	
 }
 
-function createFlatMap(){
-	initMap(20,1,20);
-	for(let x = 0; x < 20; x ++){
-		for(let y = 0; y < 1; y ++){			
-			for(let z = 0; z < 20; z++){
+function createFlatMap(_x,_y,_z){
+	initMap(_x,_y,_z);
+	for(let x = 0; x < _x; x ++){
+		for(let y = 0; y < _y; y ++){			
+			for(let z = 0; z < _z; z++){
 				var tile = createTile(x, 0, z);
 				lotg.map[x][y][z] = tile;
 			}
 		}
 	}
-	lotgCamera.setTarget(new BABYLON.Vector3(10*tileHalfWidth,0,20*tileHeight));
+	lotgCamera.setTarget(new BABYLON.Vector3(5*tileHalfWidth,0,10*tileHeight));
 	//lotgCamera.setPosition(new BABYLON.Vector3(10*tileHalfWidth,0,10*tileHeight));
 	
 	

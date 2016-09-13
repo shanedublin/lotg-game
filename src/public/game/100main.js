@@ -13,7 +13,7 @@
     //scene.clearColor = new BABYLON.Color3(0, 0.4, 0.4);
      // This creates and positions a free camera
      //var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 10, 0), scene);
-     lotgCamera = new BABYLON.ArcRotateCamera("ArcRotateCamera", 10, 10, 40, new BABYLON.Vector3(0, 70, 50), scene);
+     lotgCamera = new BABYLON.ArcRotateCamera("ArcRotateCamera", 10, 10, 40, new BABYLON.Vector3(10, 80, -20), scene);
      
      // This targets the camera to scene origin
      //lotgCamera .setTarget(BABYLON.Vector3.Zero());
@@ -34,32 +34,41 @@
   var scene = createScene();
   lotgScene = scene;
   loadMats(scene);
+  var texturePromises = loadSprites(scene);
+  var modelPromises = loadModels(scene); 
+  Promise.all(texturePromises).then(function(data){
+	  loadHud(scene);  
+  });
+  
   lotg.game = createGame();
   
-  Promise.all(loadModels(scene)).then(function(data){
+  
+  Promise.all(modelPromises).then(function(data){
 	  var stub = createStubby(1);
 	  
 	  lotg.game.placeUnit(stub,lotg.map[0][0][0]);
 	  lotg.game.placeUnit(createStubby(1),lotg.map[1][0][0]);
-	  lotg.game.placeUnit(createStubby(2),lotg.map[19][0][19]);
-	  lotg.game.placeUnit(createStubby(2),lotg.map[18][0][19]);
+	  lotg.game.placeUnit(createStubby(2),lotg.map[9][0][9]);
+	  lotg.game.placeUnit(createStubby(2),lotg.map[8][0][9]);
 	  lotg.game.finishSetUp();
   });
   
   
-  loadHud(scene);
   
+  Promise.all(texturePromises,modelPromises).then(function(data){
+	  console.log('textures and models loaded');
+	  engine.runRenderLoop(function () {
+		  
+		  lotgCanvas.fps.children[0].text =  engine.fps.toFixed(0) ;
+		  scene.render();
+		  
+		  // createTile();
+		  
+	  });
+  });
   
   
   // Register a render loop to repeatedly render the scene
-  engine.runRenderLoop(function () {
-	  
-	  lotgCanvas.fps.children[0].text =  engine.fps.toFixed(0) ;
-     scene.render();
-     
-    // createTile();
-	  
-  });
   // Watch for browser/canvas resize events
   window.addEventListener("resize", function () {
      engine.resize();
