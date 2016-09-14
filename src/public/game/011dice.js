@@ -21,12 +21,12 @@ function rollDefense(x){
 	var numDice = 0;
 	for(let i = 0; i < x ; i ++){		
 		var amount = (Math.random() *100) +1;
-		
+
 		if(amount > 100- defenseChance){
 			numDice ++;
 		}
 	}
-	
+	console.log(numDice);
 	return numDice;
 }
 

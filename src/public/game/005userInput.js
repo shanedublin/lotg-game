@@ -41,7 +41,7 @@ function mouseDownHandler (event){
 						console.error(e);
 				}
 			}else{
-				console.log('Attacka me Some Bad GUYS!');
+				//console.log('Attacka me Some Bad GUYS!');
 				lotg.game.attackUnit(lotgSelectedObject,mesh);
 			}
 					

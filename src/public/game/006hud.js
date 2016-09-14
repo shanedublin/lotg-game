@@ -167,35 +167,40 @@ function loadHud(scene){
 	},BABYLON.PrimitivePointerInfo.PointerUp);
 	
 	
-	
 	lotgCanvas.sprites = new BABYLON.ScreenSpaceCanvas2D(scene,{
 		id:' spritesCanvas',
 		size: new BABYLON.Size(200,200),
-		backgroundFill: '#4040408f',
-		children:[
-					new BABYLON.Text2D('Attack: 0',{								
-						id:'Attack',
-						x:10, y: 170,
-						fontName: defaultFont
-							
-					}),
-					new BABYLON.Text2D('Defense: 0',{
-						id:'defense',
-						x:10,y:140,
-						fontName: defaultFont
-						
-					}),
-					new BABYLON.Text2D('Result',{
-						id:'result',
-						x:10, y: 110,
-						fontName: defaultFont
-					})
-		          ],
+		backgroundFill: '#4040408f',		
 		backgroundRoundRadius: 8,
 		x: 10,
 		y: window.innerHeight - 210
 	
 	});
+	
+	
+	
+	lotgCanvas.attackText = new BABYLON.Text2D('Attack: 0',{								
+		parent: lotgCanvas.sprites,
+		id:'Attack',
+		x:10, y: 170,
+		fontName: defaultFont
+			
+	});
+	lotgCanvas.defenseText = new BABYLON.Text2D('Defense: 0',{
+		parent: lotgCanvas.sprites,
+		id:'defense',
+		x:10,y:140,
+		fontName: defaultFont
+		
+	});
+	lotgCanvas.resultText = new BABYLON.Text2D('Result',{
+		parent: lotgCanvas.sprites,	
+		id:'result',
+		x:10, y: 110,
+		fontName: defaultFont
+	});
+	
+	
 	
 	
 //	console.log(lotg.textures.swordTexture);
@@ -204,7 +209,7 @@ function loadHud(scene){
 	lotg.textures.sword = new BABYLON.Sprite2D(lotg.textures.swordTexture,{		
 		parent:lotgCanvas.sprites,
 		id:'swordThing',
-		x:100,y:100
+		x:10,y:90
 				
 	});
 	

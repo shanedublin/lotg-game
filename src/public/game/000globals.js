@@ -28,6 +28,7 @@ lotg.gameStates = {
 		startTurn: 'startTurn',
 		move: 'move',
 		attack: 'attack',
+		attacked: 'Done attacking',
 		nextPlayer: 'nextPlayer',
 		victory: 'victory'
 		

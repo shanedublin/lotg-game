@@ -87,6 +87,12 @@ function createGame(){
 		}
 		
 		console.log('atacked player!');
+		var attackResult = attackMath(attacker,defender);
+		
+		lotgCanvas.attackText.text = 'Attack: '+ attackResult.attack;
+		lotgCanvas.defenseText.text = 'Defense: '+ attackResult.defense;		
+		lotgCanvas.resultText.text = 'Result: ' + clamp(attackResult.damage,0,99) + '  Hits!'; 
+		game.setState(lotg.gameStates.attacked);
 		//game.setState(lotg.gameStates.move);
 			
 		//game.nextPlayer();
@@ -106,6 +112,7 @@ function createGame(){
 		else{
 			game.currentPlayerId = 1;	
 		}
+		clearDiceBoard();
 		game.setState(lotg.gameStates.move);
 	};
 	
@@ -126,6 +133,9 @@ function createGame(){
 			game.setState(lotg.gameStates.attack);
 			break;
 		case lotg.gameStates.attack:
+			game.setState(lotg.gameStates.attacked);
+			break;
+		case lotg.gameStates.attacked:
 			game.nextPlayer();
 			//game.setState(lotg.gameStates.attack);			
 			break;
@@ -150,9 +160,15 @@ function createGame(){
 	
 	return game;
 	
+	function clearDiceBoard(){
+		lotgCanvas.attackText.text = 'Attack: ';
+		lotgCanvas.defenseText.text = 'Defense: ';		
+		lotgCanvas.resultText.text = 'Result: ' ;
+	}
+	
 	function attackMath(attacker, defender){
-		var attackDice  = rollAttack(attacker.unitInfo.attack);
-		var defenseDice = rollDefense(defender.unitInfo.deffense);
+		var attackDice  = rollAttack(attacker.lotg.unitInfo.attack);
+		var defenseDice = rollDefense(defender.lotg.unitInfo.defense);
 		var damage = attackDice - defenseDice;
 		return {attack:attackDice, defense: defenseDice,damage:damage};
 	}

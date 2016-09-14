@@ -66,7 +66,7 @@ function getUnitInfo(){
 	unit.move = 7;
 	unit.remainingMoves = 7;
 	unit.attack = 3;
-	unit.defense = 2;
+	unit.defense = 5;
 	unit.range = 1;
 	unit.movePath = [];
 	
