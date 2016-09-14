@@ -44,12 +44,11 @@
   
   
   Promise.all(modelPromises).then(function(data){
-	  var stub = createStubby(1);
 	  
-	  lotg.game.placeUnit(stub,lotg.map[0][0][0]);
-	  lotg.game.placeUnit(createStubby(1),lotg.map[1][0][0]);
+	  lotg.game.placeUnit(createStubby(1),lotg.map[0][0][0]);
+//	  lotg.game.placeUnit(createStubby(1),lotg.map[1][0][0]);
 	  lotg.game.placeUnit(createStubby(2),lotg.map[9][0][9]);
-	  lotg.game.placeUnit(createStubby(2),lotg.map[8][0][9]);
+//	  lotg.game.placeUnit(createStubby(2),lotg.map[8][0][9]);
 	  lotg.game.finishSetUp();
   });
   

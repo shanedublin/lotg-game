@@ -57,6 +57,12 @@ function mouseDownHandler (event){
 //  window.addEventListener('onmousedown',function(event){
 //	 console.log(event); 
 //  });
+
+window.addEventListener('keyup',function(event){
+	if(event.code === 'Space'){
+		console.log(lotg.units);
+	}
+});
   
   document.addEventListener('contextmenu',function(event){
 	  try {		

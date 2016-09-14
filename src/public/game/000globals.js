@@ -15,7 +15,9 @@ lotgSelectedObject = null;
 
 
 
+
 lotg = {};
+lotg.units = [];
 
 lotg.game = null;
 

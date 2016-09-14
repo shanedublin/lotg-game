@@ -89,9 +89,17 @@ function createGame(){
 		console.log('atacked player!');
 		var attackResult = attackMath(attacker,defender);
 		
+		
+		var damage = clamp(attackResult.damage,0,99);
+		defender.lotg.unitInfo.health -= damage;
 		lotgCanvas.attackText.text = 'Attack: '+ attackResult.attack;
 		lotgCanvas.defenseText.text = 'Defense: '+ attackResult.defense;		
-		lotgCanvas.resultText.text = 'Result: ' + clamp(attackResult.damage,0,99) + '  Hits!'; 
+		lotgCanvas.resultText.text = 'Result: ' + damage + '  Hits!'; 
+		if(defender.lotg.unitInfo.health <=0){
+			console.log('unit Killed');
+			removeUnit(defender);
+		}
+		
 		game.setState(lotg.gameStates.attacked);
 		//game.setState(lotg.gameStates.move);
 			
@@ -114,6 +122,7 @@ function createGame(){
 		}
 		clearDiceBoard();
 		game.setState(lotg.gameStates.move);
+		game.checkVictory();
 	};
 	
 	game.finishSetUp=function(){
@@ -123,11 +132,18 @@ function createGame(){
 	
 	game.setState = function(state){
 		game.currentState = state;
-		lotgCanvas.header.children[0].text ='Player ' + game.currentPlayerId + ' ' +  game.currentState;
+		if(game.currentState === lotg.gameStates.victory){
+			lotgCanvas.header.children[0].text = 'Player ' + game.winner + ' is Victorious'; 
+		}else{
+			lotgCanvas.header.children[0].text ='Player ' + game.currentPlayerId + ' ' +  game.currentState;
+			
+		}
 	};
 	
 	
 	game.doneWithState = function(){
+		
+		
 		switch (game.currentState) {
 		case lotg.gameStates.move:
 			game.setState(lotg.gameStates.attack);
@@ -136,6 +152,7 @@ function createGame(){
 			game.setState(lotg.gameStates.attacked);
 			break;
 		case lotg.gameStates.attacked:
+			
 			game.nextPlayer();
 			//game.setState(lotg.gameStates.attack);			
 			break;
@@ -156,6 +173,29 @@ function createGame(){
 		}else{
 			console.error('Not a movement Turn!');
 		}
+	};
+	
+	game.checkVictory = function(){
+		let p1 = 0;
+		let p2 = 0;
+		for(let i = 0; i < lotg.units.length; i++){
+			let unit = lotg.units[i];
+			if(unit.lotg.playerId === 1)
+				p1 ++;
+			if(unit.lotg.playerId === 2)
+				p2 ++;
+		}
+		if(p1 <= 0){
+			game.winner = 2;
+			game.setState(lotg.gameStates.victory);
+		}
+		if(p2 <= 0){
+			game.winner = 1;
+			game.setState(lotg.gameStates.victory);
+		}
+		console.log(game.winner);
+		
+		
 	};
 	
 	return game;
@@ -236,8 +276,17 @@ function createGame(){
 			else{
 				console.log('There is already a unit there!');
 				return false;
-			}	
+			}		
+	}
+	
+	function removeUnit(unit){
 		
+		unit.lotg.currentTile.lotg.unit = null;
+		var index = lotg.units.indexOf(unit);
+		if(index > -1){
+			lotg.units.splice(index,1);
+		}
+		unit.dispose();
 	}
 	
 	

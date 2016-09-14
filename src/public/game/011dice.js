@@ -26,7 +26,7 @@ function rollDefense(x){
 			numDice ++;
 		}
 	}
-	console.log(numDice);
+	//console.log(numDice);
 	return numDice;
 }
 
