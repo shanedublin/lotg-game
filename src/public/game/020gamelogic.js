@@ -26,7 +26,7 @@ function createGame(){
 		
 	game.moveUnit = function(unit,tile){
 		
-		
+			
 			if(game.currentState !== lotg.gameStates.move) {
 				console.error('Not time to move yet');
 				return;
@@ -44,10 +44,8 @@ function createGame(){
 			}
 			
 			
-			if(unit.lotg.unitInfo.remainingMoves <= 0){			
-				console.log('Unit out of moves!');
-				return;
-			}
+			
+			
 			
 			// check to see if they are moving to and adjacent tile
 			
@@ -56,11 +54,31 @@ function createGame(){
 				return;
 			}
 			
+			var moveModifier = 1;
+			var heightDif =  tile.lotg.position.y - unit.lotg.currentTile.lotg.position.y ;
+			//console.log(heightDif);
+//			console.log('waa');
+			
+			if(unit.lotg.unitInfo.height <= heightDif){
+				console.log('Unit to small to climb Up!');
+				return;
+			}
+			// it cost more to move up hill
+			if(heightDif > 0){
+				//console.log('greater than 0');
+				moveModifier += heightDif;
+			}
+			
+			if(unit.lotg.unitInfo.remainingMoves < moveModifier){			
+				console.log('Unit out of moves!');
+				return;
+			}
+			
 			if(setUnit(unit,tile)){
 				//console.log(unit);
 				unit.lotg.unitInfo.movePath.push(tile);
 				tile.material = lotgMats.greenMatWalked;
-				unit.lotg.unitInfo.remainingMoves -= 1;
+				unit.lotg.unitInfo.remainingMoves -= moveModifier;
 				selectObject(unit);
 				game.movedUnits.add(unit);
 			}
@@ -206,9 +224,24 @@ function createGame(){
 		lotgCanvas.resultText.text = 'Result: ' ;
 	}
 	
+	/**
+	 * calculates how many dice should be rolled. 
+	 * if the user is higher roll 1 extra dice!
+	 */
 	function attackMath(attacker, defender){
-		var attackDice  = rollAttack(attacker.lotg.unitInfo.attack);
-		var defenseDice = rollDefense(defender.lotg.unitInfo.defense);
+		
+		var attackAmount = attacker.lotg.unitInfo.attack;
+		if(attacker.lotg.currentTile.position.y > defender.lotg.currentTile.position.y){
+			attackAmount ++;
+		}
+		
+		var defendAmount = defender.lotg.unitInfo.defense;
+		if(defender.lotg.currentTile.position.y > attacker.lotg.currentTile.position.y){
+			defendAmount ++;
+		}
+		console.log('attack: ' + attackAmount + ' defense:'  + defendAmount);
+		var attackDice  = rollAttack(attackAmount);
+		var defenseDice = rollDefense(defendAmount);
 		var damage = attackDice - defenseDice;
 		return {attack:attackDice, defense: defenseDice,damage:damage};
 	}
@@ -249,16 +282,16 @@ function createGame(){
 	
 	function setUnit(unit, tile){
 			
-			if(tile.lotg.unit === null){	
+			if(tile.lotg.object === null){	
 				var  newPos = {
 						x: tile.position.x,
 						y: tile.position.y,
 						z: tile.position.z
 				};
 				
-				newPos.y += 0.75;
+				newPos.y += 1;
 				unit.position = newPos;
-				tile.lotg.unit = unit;
+				tile.lotg.object = unit;
 			//	console.log(unit.lotg);
 				if(unit.lotg.startingTile === null){
 					unit.lotg.startingTile = tile;
@@ -266,7 +299,7 @@ function createGame(){
 				
 				//console.log(unit.lotg.currentTile);
 				if(unit.lotg.currentTile !== null){					
-					unit.lotg.currentTile.lotg.unit = null;
+					unit.lotg.currentTile.lotg.object = null;
 				}	
 				unit.lotg.currentTile = tile;
 				
@@ -281,7 +314,7 @@ function createGame(){
 	
 	function removeUnit(unit){
 		
-		unit.lotg.currentTile.lotg.unit = null;
+		unit.lotg.currentTile.lotg.object = null;
 		var index = lotg.units.indexOf(unit);
 		if(index > -1){
 			lotg.units.splice(index,1);

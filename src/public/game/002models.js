@@ -71,6 +71,7 @@ function getUnitInfo(){
 	unit.defense = 3;
 	unit.range = 1;
 	unit.movePath = [];
+	unit.height = 4;
 	
 	return unit;
 }
