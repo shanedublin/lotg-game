@@ -10,8 +10,9 @@ lotgPromises.tile.then(function(data,data2){
 	tile.isVisible = false;
 	tile.rotation.y = Math.PI/2;
 	tile.material= lotgMats.greenMat;
-	
+//	tile.renderOutline = true;
 	tile.scaling.y = 2;
+	tile.convertToFlatShadedMesh();
 	//console.log(data[0]);
 	//console.log(data[1]);
 	lotgModels.hex = tile;

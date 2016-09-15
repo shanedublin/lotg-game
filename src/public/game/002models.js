@@ -18,6 +18,9 @@ function loadModels(scene){
 		BABYLON.SceneLoader.ImportMesh('Cube','../assets/','stubby.babylon',scene,resolve);
 	});
 	
+	var pillbugPromise = new Promise(function(resolve,reject){
+		BABYLON.SceneLoader.ImportMesh('Sphere','../assets/','pillbug.babylon',scene,resolve);
+	});
 	
 	stubbyPromise.then(function(data){
 		var stubby = data[0];
@@ -25,15 +28,30 @@ function loadModels(scene){
 		stubby.scaling.x = 0.5;
 		stubby.scaling.y = 0.5;
 		stubby.scaling.z = 0.5;		
-		
-		lotgModels.stubby = stubby;
-		
-		
+		stubby.convertToFlatShadedMesh();
+		lotgModels.stubby = stubby;		
 		
 	});
 	
+	
+	
+	pillbugPromise.then(function(data){
+		var bug = data[0];
+		bug.scaling.x = 0.25;
+		bug.scaling.y = 0.25;
+		bug.scaling.z = 0.25;
+		bug.position.y = 2;
+		//bug.convertToFlatShadedMesh();
+		console.log(bug);
+		lotgModels.pillbug = bug;
+		
+	});
+	
+	
+	
 	promises.push(lotgPromises.tile);
 	promises.push(stubbyPromise);
+	promises.push(pillbugPromise);
 	
 	return promises;
   
