@@ -21,4 +21,10 @@ function loadMats(scene){
 	lotgMats.blueMat.diffuseColor =  new BABYLON.Color3(0.2,0.1,0.8);	
 	lotgMats.blueMat.specularColor = new BABYLON.Color3(0,0,0);
 	lotgMats.blueMat.ambientColor = new BABYLON.Color3(0.2,0.1,0.8);
+	
+	
+	lotgMats.greyMat = new BABYLON.StandardMaterial('greyMat',scene);
+	lotgMats.greyMat.diffuseColor =  new BABYLON.Color3(0.2,0.2,0.2);	
+	lotgMats.greyMat.specularColor = new BABYLON.Color3(0,0,0);
+	lotgMats.greyMat.ambientColor = new BABYLON.Color3(0.2,0.2,0.2); 
 }

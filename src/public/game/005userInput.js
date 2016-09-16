@@ -49,6 +49,7 @@ function mouseDownHandler (event){
 		}		 
 			 
 		 if(event.button === 0){	
+			 //TODO check that the item is selectable;
 			 selectObject(mesh);						 
 		 }				 			 
 	 }
@@ -74,3 +75,73 @@ window.addEventListener('keyup',function(event){
 	event.preventDefault();
 	  return false;
   },false);
+  
+  
+  function selectObject(mesh){
+		
+		if(lotgSelectedObject !== null){
+			if(lotgSelectedObject.lotg.indicator !== undefined){
+				lotgSelectedObject.lotg.indicator.unselect();
+				
+			}
+			//lotgSelectedObject.material = lotgSelectedObject.lotg.defaultMat;
+		}	
+			
+		
+		
+		lotgSelectedObject = mesh;
+		if(lotgSelectedObject.lotg.indicator !== undefined){
+			lotgSelectedObject.lotg.indicator.select();
+			
+		}
+		//lotgSelectedObject.lotg.indicator.select();
+		//lotgSelectedObject.material = lotgMats.blueMat;
+		
+		
+		try {
+			//lotgSelectedObject.lotg.name
+			if(lotgSelectedObject !== null){
+				if(lotgSelectedObject.lotg.unitInfo === undefined || lotgSelectedObject.lotg.unitInfo.name === 'Tile'){
+					
+					clearInfoBox();
+					return;
+					
+				}
+				//console.log(lotgSelectedObject.lotg.unitInfo);
+				//console.log(lotgSelectedObject.lotg.position);
+				
+				//console.log(lotgCanvas.SelectedUnit.children);
+				lotgCanvas.SelectedUnit.children[0].text = 'Name: ' + lotgSelectedObject.lotg.unitInfo.name;
+				if(lotgSelectedObject.lotg.playerId !== undefined){
+					lotgCanvas.SelectedUnit.children[1].text = 'Player ID: ' + lotgSelectedObject.lotg.playerId;				
+				}else{
+					lotgCanvas.SelectedUnit.children[1].text = 'Player ID: N/A';
+				}
+				lotgCanvas.SelectedUnit.children[2].text = 'Health: ' + lotgSelectedObject.lotg.unitInfo.health;
+				lotgCanvas.SelectedUnit.children[3].text = 'Attack: ' + lotgSelectedObject.lotg.unitInfo.attack;
+				lotgCanvas.SelectedUnit.children[4].text = 'Defense: ' + lotgSelectedObject.lotg.unitInfo.defense;
+				lotgCanvas.SelectedUnit.children[5].text = 'Move: ' + lotgSelectedObject.lotg.unitInfo.remainingMoves +' / '+ lotgSelectedObject.lotg.unitInfo.move;
+				lotgCanvas.SelectedUnit.children[6].text = 'Range: ' + lotgSelectedObject.lotg.unitInfo.range;
+				
+				
+			}else{
+				lotgCanvas.SelectedUnit.children[0].text = 'hate';
+				
+			}
+		} catch (e) {
+			console.error(e);
+		}
+		function  clearInfoBox(){
+			lotgCanvas.SelectedUnit.children[0].text = 'Name: ' ;
+			lotgCanvas.SelectedUnit.children[1].text = 'Player ID:';				
+			lotgCanvas.SelectedUnit.children[2].text = 'Health: ' ;
+			lotgCanvas.SelectedUnit.children[3].text = 'Attack: ' ;
+			lotgCanvas.SelectedUnit.children[4].text = 'Defense: ';
+			lotgCanvas.SelectedUnit.children[5].text = 'Move: ' ;
+			lotgCanvas.SelectedUnit.children[6].text = 'Range: ' ;
+		}
+		
+		
+	}
+  
+  

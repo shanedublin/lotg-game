@@ -253,46 +253,4 @@ function moveHud(){
 }
 
 
-function selectObject(mesh){
-	try {
-		//console.log(lotgSelectedObject);
-		if(lotgSelectedObject !== null){
-			lotgSelectedObject.material = lotgSelectedObject.lotg.defaultMat;
-		}	
-		
-	} catch (e) {
-		console.error(e);
-	}
-	
-	lotgSelectedObject = mesh;
-	lotgSelectedObject.material = lotgMats.blueMat;
-	
-	
-	try {
-		//lotgSelectedObject.lotg.name
-		if(lotgSelectedObject !== null){
-			//console.log(lotgSelectedObject.lotg.position);
-			
-			//console.log(lotgCanvas.SelectedUnit.children);
-			lotgCanvas.SelectedUnit.children[0].text = 'Name: ' + lotgSelectedObject.lotg.unitInfo.name;
-			if(lotgSelectedObject.lotg.playerId !== undefined){
-				lotgCanvas.SelectedUnit.children[1].text = 'Player ID: ' + lotgSelectedObject.lotg.playerId;				
-			}else{
-				lotgCanvas.SelectedUnit.children[1].text = 'Player ID: N/A';
-			}
-			lotgCanvas.SelectedUnit.children[2].text = 'Health: ' + lotgSelectedObject.lotg.unitInfo.health;
-			lotgCanvas.SelectedUnit.children[3].text = 'Attack: ' + lotgSelectedObject.lotg.unitInfo.attack;
-			lotgCanvas.SelectedUnit.children[4].text = 'Defense: ' + lotgSelectedObject.lotg.unitInfo.defense;
-			lotgCanvas.SelectedUnit.children[5].text = 'Move: ' + lotgSelectedObject.lotg.unitInfo.remainingMoves +' / '+ lotgSelectedObject.lotg.unitInfo.move;
-			lotgCanvas.SelectedUnit.children[6].text = 'Range: ' + lotgSelectedObject.lotg.unitInfo.range;
-			
-			
-		}else{
-			lotgCanvas.SelectedUnit.children[0].text = 'hate';
-			
-		}
-	} catch (e) {
-		console.error(e);
-	}
-	
-}
+

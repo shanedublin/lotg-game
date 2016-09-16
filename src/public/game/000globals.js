@@ -21,7 +21,7 @@ lotg.units = [];
 
 lotg.game = null;
 
-
+// the map used for the game
 lotg.map = null;
 
 lotg.gameStates = {
@@ -37,3 +37,7 @@ lotg.gameStates = {
 };
 
 lotg.textures = {};
+// holds the sprites
+lotg.sprites = {};
+
+lotg.clock = {};

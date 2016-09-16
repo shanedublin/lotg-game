@@ -37,6 +37,7 @@ function loadModels(scene){
 	
 	pillbugPromise.then(function(data){
 		var bug = data[0];
+		bug.isVisible = false;
 		bug.scaling.x = 0.25;
 		bug.scaling.y = 0.25;
 		bug.scaling.z = 0.25;
@@ -69,15 +70,33 @@ function createStubby(playerId){
 	stub.lotg.startingTile = null;
 	//stub.lotg.selectable = true;
 	
-	stub.material = lotgMats.redMat;
-	stub.lotg.defaultMat = lotgMats.redMat;
+	stub.material = lotgMats.greyMat;
+	stub.lotg.defaultMat = lotgMats.greyMat;
 	stub.lotg.unitInfo  = getUnitInfo();
 	stub.lotg.type = 'UNIT';
 	stub.isVisible = true;
 	lotg.units.push(stub);
+	stub.lotg.indicator = trackUnit(stub,getPlayerColor(playerId));
+	
 	return stub;
 }
 
+function getPlayerColor(playerId){
+	
+	var blue = new BABYLON.Color4(8/255,5/255,190/255,0.8);
+	var red = new BABYLON.Color4(190/255,5/255,8/255,0.8);
+	
+	switch (playerId) {
+	case 1:
+		return blue;		
+	case 2:
+		return red;
+	default:
+		break;
+	}
+	
+	
+}
 
 function getUnitInfo(){
 	var unit = {};

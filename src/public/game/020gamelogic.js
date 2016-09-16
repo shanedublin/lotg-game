@@ -315,6 +315,7 @@ function createGame(){
 	function removeUnit(unit){
 		
 		unit.lotg.currentTile.lotg.object = null;
+		unit.lotg.indicator.clear();
 		var index = lotg.units.indexOf(unit);
 		if(index > -1){
 			lotg.units.splice(index,1);

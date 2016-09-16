@@ -20,9 +20,9 @@
      // This attaches the camera to the canvas
      lotgCamera .attachControl(canvas, false);
      // This creates a light, aiming 0,1,0 - to the sky.
-     var light = new BABYLON.PointLight("light1", new BABYLON.Vector3(60, 1000, 60), scene);
+     var light = new BABYLON.PointLight("light1", new BABYLON.Vector3(10, 1000, 10), scene);
      // Dim the light a small amount
-     light.intensity = 0.5;
+     light.intensity = 0.7;
 
      
 	  
@@ -46,9 +46,10 @@
   Promise.all(modelPromises).then(function(data){
 	  
 	  lotg.game.placeUnit(createStubby(1),lotg.map[0][0][0]);
-//	  lotg.game.placeUnit(createStubby(1),lotg.map[1][0][0]);
+	  lotg.game.placeUnit(createStubby(1),lotg.map[1][0][0]);
 	  lotg.game.placeUnit(createStubby(2),lotg.map[9][0][9]);
-//	  lotg.game.placeUnit(createStubby(2),lotg.map[8][0][9]);
+	  lotg.game.placeUnit(createStubby(2),lotg.map[8][0][9]);
+	  startClock(scene);
 	  lotg.game.finishSetUp();
   });
   
