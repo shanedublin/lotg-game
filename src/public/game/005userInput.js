@@ -28,6 +28,7 @@ function mouseDownHandler (event){
 			if(lotgSelectedObject === null){
 				return;				
 			}
+			
 			if(lotgSelectedObject.lotg.type !== 'UNIT'){
 				return;
 			}

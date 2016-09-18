@@ -6,36 +6,28 @@
   
   // Here begins a function that we will 'call' just after it's built
   var createScene = function () {
-     // Now create a basic Babylon Scene object
+
      var scene = new BABYLON.Scene(engine);
-     scene.ambientColor = new BABYLON.Color3(1,1,1);
-     // Change the scene background color to green.
-    //scene.clearColor = new BABYLON.Color3(0, 0.4, 0.4);
-     // This creates and positions a free camera
+
      //var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 10, 0), scene);
      lotgCamera = new BABYLON.ArcRotateCamera("ArcRotateCamera", 10, 10, 40, new BABYLON.Vector3(10, 80, -20), scene);
-     
-     // This targets the camera to scene origin
-     //lotgCamera .setTarget(BABYLON.Vector3.Zero());
-     // This attaches the camera to the canvas
-     lotgCamera .attachControl(canvas, false);
-     // This creates a light, aiming 0,1,0 - to the sky.
-     var light = new BABYLON.PointLight("light1", new BABYLON.Vector3(10, 1000, 10), scene);
-     // Dim the light a small amount
-     light.intensity = 0.7;
-
-     
+     lotgCamera.attachControl(canvas, false);     
 	  
      return scene;
      
-  }; // End of createScene function
-  // -------------------------------------------------------------
-  // Now, call the createScene function that you just finished creating
+  };
+  
+  // create scene
   var scene = createScene();
+  
+  
+  // load all the things
   lotgScene = scene;
   loadMats(scene);
+  loadLights(scene);
   var texturePromises = loadSprites(scene);
   var modelPromises = loadModels(scene); 
+  var heroPromises = loadHeroes(scene);
   Promise.all(texturePromises).then(function(data){
 	  loadHud(scene);  
   });
@@ -43,14 +35,23 @@
   lotg.game = createGame();
   
   
-  Promise.all(modelPromises).then(function(data){
+  Promise.all(heroPromises).then(function(data){
 	  
 	  lotg.game.placeUnit(createStubby(1),lotg.map[0][0][0]);
-	  lotg.game.placeUnit(createStubby(1),lotg.map[1][0][0]);
+	  lotg.game.placeUnit(createCone(1),lotg.map[1][0][0]);
+	  lotg.game.placeUnit(createBug(1),lotg.map[2][0][0]);
+	  lotg.game.placeUnit(createBug(1),lotg.map[3][0][0]);
+	  lotg.game.placeUnit(createBug(1),lotg.map[4][0][0]);
+	  
 	  lotg.game.placeUnit(createStubby(2),lotg.map[9][0][9]);
-	  lotg.game.placeUnit(createStubby(2),lotg.map[8][0][9]);
+	  lotg.game.placeUnit(createCone(2),lotg.map[8][0][9]);
+	  lotg.game.placeUnit(createBug(2),lotg.map[7][0][9]);
+	  lotg.game.placeUnit(createBug(2),lotg.map[6][0][9]);
+	  lotg.game.placeUnit(createBug(2),lotg.map[5][0][9]);
 	  startClock(scene);
 	  lotg.game.finishSetUp();
+  }).catch(function(error){
+	  console.log(error);
   });
   
   

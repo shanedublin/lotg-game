@@ -33,7 +33,6 @@ function createGame(){
 			}
 			
 			
-			
 			if(unit.lotg.playerId !== game.currentPlayerId){
 				console.log('Not that players Turn!');
 				return;
@@ -90,6 +89,7 @@ function createGame(){
 	
 	game.attackUnit = function(attacker, defender){
 		
+		
 		if(game.currentState !== lotg.gameStates.attack){
 			console.error('Not time to atatck!');
 			return;
@@ -103,6 +103,16 @@ function createGame(){
 		if(!canUseUnit(attacker)){
 			return;
 		}
+		
+		let distanceBetween = hex.dist(attacker.lotg.currentTile.lotg.position,
+				defender.lotg.currentTile.lotg.position); 
+		
+		if(distanceBetween > attacker.lotg.unitInfo.range){
+			console.log('Not close enough to attack!');
+			return;
+		}		
+		//TODO figure out line of site
+		
 		
 		console.log('atacked player!');
 		var attackResult = attackMath(attacker,defender);
@@ -128,7 +138,7 @@ function createGame(){
 		
 		// reset the color of the move path
 		// reset the remaining move
-		resetMovement();
+		resetMovement(true);
 		game.turnUnit = null;
 		
 		
@@ -184,10 +194,10 @@ function createGame(){
 	game.cancelMovement = function(){
 		if(game.currentState === lotg.gameStates.move){
 			if(game.turnUnit !== null){
-				setUnit(game.turnUnit,game.turnUnit.lotg.startingTile);
+				
 				game.turnUnit = null;
 			}  
-			resetMovement();
+			resetMovement(false);
 		}else{
 			console.error('Not a movement Turn!');
 		}
@@ -230,6 +240,10 @@ function createGame(){
 	 */
 	function attackMath(attacker, defender){
 		
+		// can player attack is he in range
+		
+		
+		
 		var attackAmount = attacker.lotg.unitInfo.attack;
 		if(attacker.lotg.currentTile.position.y > defender.lotg.currentTile.position.y){
 			attackAmount ++;
@@ -246,12 +260,20 @@ function createGame(){
 		return {attack:attackDice, defense: defenseDice,damage:damage};
 	}
 	
-	function resetMovement(){
+	
+	/**
+	 * If you only want to reset the movement path color pass true
+	 */
+	function resetMovement(colorOnly){
 		for(let unit of game.movedUnits){
 			unit.lotg.unitInfo.remainingMoves = unit.lotg.unitInfo.move;
 			for (let i = 0; i< unit.lotg.unitInfo.movePath.length; i ++){
 				let tile = unit.lotg.unitInfo.movePath[i];
 				tile.material = tile.lotg.defaultMat;
+			}
+			if(!colorOnly){
+				setUnit(unit,unit.lotg.startingTile);
+				
 			}
 			unit.lotg.startingTile = unit.lotg.currentTile;
 			
@@ -270,14 +292,45 @@ function createGame(){
 		if(game.turnUnit === null){			
 			game.turnUnit = unit;
 			return true;
-		}else{
-			if(game.turnUnit !== unit){
-				console.error('You cant move that unit this turn!');
-				return false;
-			}else{
-				return true;
+		}
+		
+		if(game.turnUnit === unit){
+			return true;
+		}
+		
+		//if its not the same type of sqaud
+		if(unit.lotg.unitInfo.name !== game.turnUnit.lotg.unitInfo.name){
+			console.log(unit.lotg.unitInfo.name);
+			console.log(game.turnUnit.lotg.unitInfo.name);
+			console.log('squad not match');
+			return false;
+		}
+		
+		if(unit.lotg.unitInfo.type === 'squad'){
+			for(let moved of game.movedUnits){
+				if(moved === unit){
+					return true;
+				}
 			}
 		}
+		
+		if(game.movedUnits.size < unit.lotg.unitInfo.num){
+			return true;
+		}
+		
+		// this
+		console.log('cant move unit');
+		return false;
+		
+		
+//		
+//		if(game.turnUnit !== unit){
+//			console.error('You cant move that unit this turn!');
+//			return false;
+//		}else{
+//			return true;
+//		}
+		
 	}
 	
 	function setUnit(unit, tile){
@@ -289,7 +342,7 @@ function createGame(){
 						z: tile.position.z
 				};
 				
-				newPos.y += 1;
+				newPos.y += unit.lotg.unitInfo.yOffset;
 				unit.position = newPos;
 				tile.lotg.object = unit;
 			//	console.log(unit.lotg);

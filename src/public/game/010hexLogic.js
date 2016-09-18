@@ -6,23 +6,30 @@ hex.adjacent = function(tile1,tile2){
 	
 	var cube1 = hex.convertCords(tile1.x, tile1.z);
 	var cube2 = hex.convertCords(tile2.x, tile2.z);
-	var dist = hex.dist(cube1,cube2);
+	var dist = hex.cubeDist(cube1,cube2);
 	
 	if(dist === 1)
 		return true;
-	
-//	console.log(dist);
-	//console.log(tile1);
-	//console.log(tile2);
-	
-	//console.log(cube1);
-	//console.log(cube2);
 	
 	return false;
 };
 
 
-hex.dist = function(cube1,cube2){
+/**
+ *  find the distance between tiles with normal coordinates
+ */
+hex.dist = function(tile1,tile2){
+	var cube1 = hex.convertCords(tile1.x, tile1.z);
+	var cube2 = hex.convertCords(tile2.x, tile2.z);
+	var dist = hex.cubeDist(cube1,cube2);
+	
+	return dist;
+};
+
+/**
+ * finds the distance between tiles with cube coordinates
+ */
+hex.cubeDist = function(cube1,cube2){
 	var x =  Math.abs(cube1.x - cube2.x);
 	var y =  Math.abs(cube1.y - cube2.y);
 	var z =  Math.abs(cube1.z - cube2.z);

@@ -4,23 +4,6 @@ var tileHalfWidth = 1.5;
 var tileFullWidth = 3;
 var tileThickness = 0.5;
 
-lotgPromises.tile.then(function(data,data2){
-	//data.isVisible = false;
-	var tile = data[0];
-	tile.isVisible = false;
-	tile.rotation.y = Math.PI/2;
-	tile.material= lotgMats.greenMat;
-//	tile.renderOutline = true;
-	tile.scaling.y = 2;
-	tile.convertToFlatShadedMesh();
-	//console.log(data[0]);
-	//console.log(data[1]);
-	lotgModels.hex = tile;
-//	createFlatMap(10,1,10);
-	hardCodeMap(10,7,10);
-
-	
-});
 
 function initMap(_x,_y,_z){
 	var counter = 0;
@@ -131,8 +114,9 @@ function createTile(x,y,z){
 	 tile.lotg.type = 'TILE';
 	 tile.lotg.unitInfo.name = 'Tile';
 	 tile.lotg.object = null;
-	 
-	 tile.lotg.defaultMat = lotgMats.greenMat;
+	 tile.lotg.defaultMat = lotgMats.grass;
+	 tile.material = lotgMats.grass;
+//	 tile.lotg.defaultMat = null;
 	 tile.lotg.position = {x:x,y:y,z:z};
 	 tile.isVisible = true;
 	 if(x %2 === 0){

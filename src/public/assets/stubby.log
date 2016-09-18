@@ -4,15 +4,16 @@ Exporter version: 5.0.5, Blender version: 2.76 (sub 0)
 		selected layers only:  false
 		flat shading entire scene:  false
 		inline textures:  false
-		texture directory:  D:\Projects\lotg-game\blender\
+		texture directory:  D:\Projects\lotg-game\src\public\assets\
 	Python World class constructor completed
-	processing begun of camera (FreeCamera):  Camera
-	processing begun of mesh:  Circle
-		processing begun of baked material:  Circle
-			Cycles baking texture, type: DIFFUSE_COLOR, mapped using: UVMap
-		num positions      :  50
-		num normals        :  50
-		num uvs            :  100
+	WARNING: No active camera has been assigned, or is not in a currently selected Blender layer
+	processing begun of mesh:  Cube
+		processing begun of Standard material:  Material.002
+			Diffuse texture found "Texture.001"
+				Image texture found, type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  61
+		num normals        :  61
+		num uvs            :  122
 		num uvs2           :  0
 		num colors         :  0
 		num indices        :  72
@@ -20,4 +21,4 @@ Exporter version: 5.0.5, Blender version: 2.76 (sub 0)
 ========= Writing of scene file started =========
 ========= Writing of scene file completed =========
 ========= end of processing =========
-elapsed time:  0 min, 0.6474 secs
+elapsed time:  0 min, 0.012 secs

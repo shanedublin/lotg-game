@@ -231,9 +231,6 @@ function loadHud(scene){
 	
 	moveHud();
 }
-function hate(res){
-	console.log(res);
-}
 
 function moveHud(){
 	//console.log(lotgCanvas);
