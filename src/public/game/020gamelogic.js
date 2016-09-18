@@ -99,10 +99,15 @@ function createGame(){
 			console.log('Not that players Turn!');
 			return;
 		}
+		if(attacker.lotg.unitInfo.attacked === true){
+			console.log('Unit already Attacked!');
+			return false;
+		}
 		
 		if(!canUseUnit(attacker)){
 			return;
 		}
+		
 		
 		let distanceBetween = hex.dist(attacker.lotg.currentTile.lotg.position,
 				defender.lotg.currentTile.lotg.position); 
@@ -276,6 +281,7 @@ function createGame(){
 				
 			}
 			unit.lotg.startingTile = unit.lotg.currentTile;
+			unit.lotg.attacked =false
 			
 		}
 		
