@@ -30,6 +30,7 @@ class unitInfo{
 		this.yOffset = yOffset;
 		this.name = name;
 		this.type = type;
+		this.attacked = false;
 	}
 	
 }
