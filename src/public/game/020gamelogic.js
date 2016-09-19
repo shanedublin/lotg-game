@@ -281,7 +281,7 @@ function createGame(){
 				
 			}
 			unit.lotg.startingTile = unit.lotg.currentTile;
-			unit.lotg.attacked =false
+			unit.lotg.attacked =false;
 			
 		}
 		
